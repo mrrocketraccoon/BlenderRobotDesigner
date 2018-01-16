@@ -149,7 +149,7 @@ def draw(layout, context):
                         sensors.ConvertCameraToSensor.place_button(row, "Convert to camera sensor",
                                                                    infoBox).sensor_type = "CAMEAR_SENSOR"
             elif mode == "LASER_SENSOR":
-                if sensor.RobotEditor.taoxcmg == 'LASER_SENSOR':
+                if sensor.RobotEditor.tag == 'LASER_SENSOR':
                     pass
                 else:
                     infoBox.add_message('Selected object is no camera sensor')
