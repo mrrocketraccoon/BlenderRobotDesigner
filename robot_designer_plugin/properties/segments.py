@@ -71,8 +71,7 @@ class RDDegreeOfFreedom(bpy.types.PropertyGroup):
     def updateDoF(self: memoryview, context):
         if global_properties.do_kinematic_update.get(context.scene):
             segment_name = context.active_bone.name
-
-            UpdateSegments.run(segment_name=segment_name)
+            UpdateSegments.run(segment_name=segment_name, recurse=False)
 
     value = FloatProperty(name="Value", update=updateDoF, precision=4,
                           step=100)
@@ -158,14 +157,10 @@ class RDSegment(bpy.types.PropertyGroup):
     """
 
     def callbackSegments(self, context):
-        try:
-            logger.debug("Callback called")
-            armName = context.active_object.name
-            segment_name = context.active_bone.name
-
-            UpdateSegments.run(segment_name=segment_name)
-        except:
-            pass
+        armName = context.active_object.name
+        segment_name = context.active_bone.name
+        # We should not have to recurse when updating a local property.
+        UpdateSegments.run(segment_name=segment_name, recurse=False)
 
     def getTransform(self):
         """
@@ -234,8 +229,8 @@ class RDSegment(bpy.types.PropertyGroup):
         # return parentMatrix, translation*rotation
 
     jointMode = EnumProperty(
-            items=[('PRISMATIC', 'Prismatic', 'prismatic joint'),
-                   ('REVOLUTE', 'Revolute', 'revolute joint'),
+            items=[('REVOLUTE', 'Revolute', 'revolute joint'),
+                   ('PRISMATIC', 'Prismatic', 'prismatic joint'),
                    ('REVOLUTE2', 'Revolute2', 'revolute2 joint'),
                    ('UNIVERSAL', 'Universal', 'universal joint'),
                    ('BALL', 'Ball', 'ball joint'),
